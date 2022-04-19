@@ -1,11 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import AlliancesIndex from '../views/AlliancesIndex.vue'
+import AlliancesShow from '../views/AlliancesShow.vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/alliances',
+    name: 'alliances-index',
+    component: AlliancesIndex
+  },
+  {
+    path: '/alliances/:name',
+    name: 'alliances-show',
+    component: AlliancesShow
   },
   {
     path: '/about',
