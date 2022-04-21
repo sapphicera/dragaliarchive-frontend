@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import AlliancesIndex from '../views/AlliancesIndex.vue'
 
 const routes = [
   {
@@ -9,9 +8,24 @@ const routes = [
     component: HomeView
   },
   {
+    path: '/signup',
+    name: 'signup',
+    component: () => import('../views/SignupView.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/LoginView.vue')
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: () => import('../views/LogoutView.vue')
+  },
+  {
     path: '/alliances',
     name: 'alliances-index',
-    component: AlliancesIndex
+    component: () => import('../views/AlliancesIndex.vue')
   },
   {
     path: '/alliances/:name',

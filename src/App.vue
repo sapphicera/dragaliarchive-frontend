@@ -1,10 +1,30 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/alliances">Alliances</router-link>
+    <router-link to="/alliances">Alliances</router-link> |
+    <router-link to="/signup">Sign Up</router-link> |
+    <router-link to="/login">Log In</router-link> |
+    <router-link to="/logout">Log Out</router-link>
   </nav>
   <router-view />
 </template>
+
+<script>
+export default {
+  data: function () {
+    return {
+      isLoggedIn: false,
+      getUserId: 0,
+    }
+  },
+  watch: {
+    $route: function () {
+      this.isLoggedIn = !!localStorage.jwt;
+      this.getUserId = localStorage.user_id;
+    }
+  }
+}
+</script>
 
 <style>
 #app {

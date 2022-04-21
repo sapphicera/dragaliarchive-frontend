@@ -50,7 +50,7 @@ export default {
         </div>
         <div class="card-footer">
           <router-link :to="{
-            name: 'alliances-show', params: { name: alliance.name, id: alliance.id }
+            name: 'alliances-show', params: { name: alliance.name }
           }" class="btn btn-primary">Learn More</router-link>
         </div>
       </div>
