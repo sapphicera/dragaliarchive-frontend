@@ -22,12 +22,19 @@ export default {
 </script>
 
 <template>
-  {{ user.username }}
-  {{ user.email }}
-  <br /> <br />
-  this is the information: {{ this.$route.params }}
+  <img v-bind:src="user.icon">
   <br />
+  {{ user.username }}
+  <br />
+  {{ user.email }}
+  <!-- <br /> <br />
+  this is the information: {{ this.$route.params }}
+  <br /> -->
 </template>
 
 <style>
+img {
+  width: 100px;
+  height: 100px;
+}
 </style>

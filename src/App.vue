@@ -2,11 +2,14 @@
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/alliances">Alliances</router-link> |
+
     <div v-if="!isLoggedIn">
       <router-link to="/signup">Sign Up</router-link> |
       <router-link to="/login">Log In</router-link> |
     </div>
+
     <div v-if="isLoggedIn">
+      <router-link to="/users/${}">Profile</router-link>
       <router-link to="/logout">Log Out</router-link>
     </div>
 
