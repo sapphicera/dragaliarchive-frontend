@@ -9,7 +9,7 @@
     </div>
 
     <div v-if="isLoggedIn">
-      <router-link to="/users/${}">Profile</router-link>
+      <router-link :to="`/users/${this.getUserUsername}`">Profile</router-link>
       <router-link to="/logout">Log Out</router-link>
     </div>
 
@@ -23,12 +23,14 @@ export default {
     return {
       isLoggedIn: false,
       getUserId: 0,
+      getUserUsername: "",
     }
   },
   watch: {
     $route: function () {
       this.isLoggedIn = !!localStorage.jwt;
       this.getUserId = localStorage.user_id;
+      this.getUserUsername = localStorage.user_username;
     }
   }
 }
