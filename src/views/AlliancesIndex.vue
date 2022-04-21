@@ -49,7 +49,9 @@ export default {
           </div>
         </div>
         <div class="card-footer">
-          <router-link v-bind:to="`/alliances/${alliance.id}`" class="btn btn-primary">Learn More</router-link>
+          <router-link :to="{
+            name: 'alliances-show', params: { name: alliance.name, id: alliance.id }
+          }" class="btn btn-primary">Learn More</router-link>
         </div>
       </div>
     </div>
