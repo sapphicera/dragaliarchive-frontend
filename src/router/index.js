@@ -23,6 +23,11 @@ const routes = [
     component: () => import('../views/LogoutView.vue')
   },
   {
+    path: '/users/:username',
+    name: 'users-profile',
+    component: () => import('../views/UsersShow.vue')
+  },
+  {
     path: '/alliances',
     name: 'alliances-index',
     component: () => import('../views/AlliancesIndex.vue')
