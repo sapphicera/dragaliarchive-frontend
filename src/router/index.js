@@ -28,6 +28,11 @@ const routes = [
     component: () => import('../views/UsersShow.vue')
   },
   {
+    path: '/users/:username/edit',
+    name: 'users-edit',
+    component: () => import('../views/UsersEdit.vue')
+  },
+  {
     path: '/alliances',
     name: 'alliances-index',
     component: () => import('../views/AlliancesIndex.vue')
