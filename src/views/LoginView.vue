@@ -17,6 +17,7 @@ export default {
           localStorage.setItem("jwt", response.data.jwt);
           localStorage.setItem("user_id", response.data.user_id);
           localStorage.setItem("user_username", response.data.username);
+          localStorage.setItem("user_alliance", response.data.alliance_id);
           this.$router.push("/");
         })
         .catch((error) => {

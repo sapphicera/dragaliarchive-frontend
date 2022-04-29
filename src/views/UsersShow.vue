@@ -5,10 +5,16 @@ export default {
   data: function () {
     return {
       user: {},
+      getUserUsername: "",
     };
   },
   created: function () {
     this.showUser();
+  },
+  mounted: function () {
+    if (localStorage.user_username && !!localStorage.jwt) {
+      this.getUserUsername = localStorage.user_username;
+    }
   },
   methods: {
     showUser: function () {
@@ -26,25 +32,21 @@ export default {
   <p>{{ user.username }}</p>
   <p>IGN: {{ user.ign }}</p>
   <p>Game ID: {{ user.gameid }}</p>
-  <p>Alliance ID: {{ user.alliance_id }}</p>
+  <p v-if="user.alliance_id === null">Alliance: user is not in an alliance!</p>
+  <p v-if="user.alliance_id != null">Alliance: {{ user.alliance_id }}</p>
   <p>Level: {{ user.level }}</p>
   <p>Element: {{ user.element }}</p>
   <p>Weapon: {{ user.weapon }}</p>
   <p>Event: {{ user.event }}</p>
   <p>Fight: {{ user.fight }}</p>
 
-  <p>
+  <div v-if="user.alliance_id === null">
+    User Is Eligable To Join An Alliance!
+  </div>
+
+  <div v-if="user.username === getUserUsername">
     <router-link v-bind:to="`/users/${user.username}/edit`">Edit Profile</router-link>
-  </p>
-
-
-
-  <!-- <div v-if="user.username == ">
-    Hi
-  </div> -->
-
-  <!-- <router-link v-bind:to="`/users/${user.username}/edit`">Edit Profile</router-link> -->
-
+  </div>
 </template>
 
 <style>

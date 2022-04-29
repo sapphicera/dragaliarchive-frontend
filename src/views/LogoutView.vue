@@ -7,6 +7,7 @@ export default {
     localStorage.removeItem("jwt");
     localStorage.removeItem("user_id");
     localStorage.removeItem("user_username");
+    localStorage.removeItem("user_alliance");
     this.$router.push("/");
   },
 };
