@@ -1,19 +1,33 @@
 <script>
+import axios from "axios";
+
 export default {
   data: function () {
     return {
-      message: "Welcome to Vue.js!",
+      users: [],
+      search: "",
     };
   },
-  created: function () { },
-  methods: {},
+  methods: {
+    newSearch: function () {
+      console.log('new search...')
+      axios.get(`/users.json?search_term=${this.search}`).then(response => {
+        console.log(response.data)
+        this.users = response.data;
+      })
+    }
+  },
 };
 </script>
 
 <template>
-  <div class="home">
-    <h1>{{ message }}</h1>
+  Search: <input type="text" v-model="search">
+  <button v-on:click="newSearch()">New Search</button>
+
+  <div v-for="user in users" v-bind:key="user.username">
+    {{ user.id }}: {{ user.username }}
   </div>
+
 </template>
 
 <style>
