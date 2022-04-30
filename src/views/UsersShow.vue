@@ -33,7 +33,7 @@ export default {
   <p>IGN: {{ user.ign }}</p>
   <p>Game ID: {{ user.gameid }}</p>
   <p v-if="user.alliance_id === null">Alliance: user is not in an alliance!</p>
-  <p v-if="user.alliance_id != null">Alliance: {{ user.alliance_id }}</p>
+  <p v-if="user.alliance_id != null">Alliance: {{ user.alliance.name }}</p>
   <p>Level: {{ user.level }}</p>
   <p>Element: {{ user.element }}</p>
   <p>Weapon: {{ user.weapon }}</p>

@@ -5,10 +5,10 @@ export default {
   data: function () {
     return {
       alliance: {},
-      alli_users: {},
       isLoggedIn: false,
       getUserUsername: "",
       getUserAlliance: 0,
+      editUserParams: {},
     };
   },
   created: function () {
@@ -24,14 +24,29 @@ export default {
   methods: {
     showAlliance: function () {
       axios.get(`/alliances/${this.$route.params.name}.json`).then((response) => {
-        console.log(response.data);
         this.alliance = response.data;
-        this.alli_users = response.data.users;
       })
     },
     joinAlliance: function () {
-      window.location.reload();
-    }
+      axios.post(`/alliances/${this.alliance.name}/join`).then((response) => {
+        console.log(response.data);
+        localStorage.user_alliance = this.alliance.id;
+        // localStorage.user_alliance = response.data.id;
+      }).then(() => {
+        window.location.reload();
+      }).catch((error) => {
+        console.log(error.message);
+      });
+    },
+    leaveAlliance: function () {
+      axios.delete(`/alliances/${this.alliance.name}/leave`).then(() => {
+        localStorage.user_alliance = null;
+      }).then(() => {
+        window.location.reload();
+      }).catch((error) => {
+        console.log(error.message);
+      });
+    },
   },
 };
 </script>
@@ -46,17 +61,18 @@ export default {
     <button class="btn btn-primary" @click="joinAlliance()">Join Alliance</button>
   </div>
 
+  <div v-if="getUserAlliance != 'null' && isLoggedIn === true">
+    <button class="btn btn-primary" @click="leaveAlliance()">Leave Alliance</button>
+  </div>
+
   <div v-if="isLoggedIn === false">
     Please Log In To Join An Alliance!
   </div>
 
-  <!-- <router-link :to="{
-    name: 'alliances-show', params: { name: alliance.name }
-  }" class="btn btn-primary">Join Alliance</router-link> -->
-
   <div v-for="user in alliance.users" v-bind:key="user.username">
     {{ user.id }}. {{ user.username }}
   </div>
+
 </template>
 
 <style>
