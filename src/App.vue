@@ -24,7 +24,6 @@ export default {
       isLoggedIn: false,
       getUserId: 0,
       getUserUsername: "",
-      getUserAlliance: 0,
     }
   },
   watch: {
@@ -32,7 +31,6 @@ export default {
       this.isLoggedIn = !!localStorage.jwt;
       this.getUserId = localStorage.user_id;
       this.getUserUsername = localStorage.user_username;
-      this.getUserAlliance = localStorage.user_alliance;
     }
   }
 }

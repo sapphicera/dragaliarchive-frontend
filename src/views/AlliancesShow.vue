@@ -7,19 +7,20 @@ export default {
       alliance: {},
       isLoggedIn: false,
       getUserUsername: "",
-      getUserAlliance: 0,
-      editUserParams: {},
+      userAlliance: null,
     };
   },
   created: function () {
     this.showAlliance();
   },
   mounted: function () {
-    if (localStorage.user_username && localStorage.user_alliance && !!localStorage.jwt) {
+    if (localStorage.jwt !== null) {
       this.getUserUsername = localStorage.user_username;
-      this.getUserAlliance = localStorage.user_alliance;
       this.isLoggedIn = !!localStorage.jwt;
     }
+    axios.get(`/users/${this.getUserUsername}.json`).then((response) => {
+      this.userAlliance = response.data.alliance_id;
+    })
   },
   methods: {
     showAlliance: function () {
@@ -28,24 +29,12 @@ export default {
       })
     },
     joinAlliance: function () {
-      axios.post(`/alliances/${this.alliance.name}/join`).then((response) => {
-        console.log(response.data);
-        localStorage.user_alliance = this.alliance.id;
-        // localStorage.user_alliance = response.data.id;
-      }).then(() => {
-        window.location.reload();
-      }).catch((error) => {
-        console.log(error.message);
-      });
+      axios.post(`/alliances/${this.alliance.name}/join`)
+      window.location.reload();
     },
     leaveAlliance: function () {
-      axios.delete(`/alliances/${this.alliance.name}/leave`).then(() => {
-        localStorage.user_alliance = null;
-      }).then(() => {
-        window.location.reload();
-      }).catch((error) => {
-        console.log(error.message);
-      });
+      axios.delete(`/alliances/${this.alliance.name}/leave`)
+      window.location.reload();
     },
   },
 };
@@ -57,20 +46,22 @@ export default {
   <h2>{{ alliance.name }}</h2>
   <p> {{ alliance.description }}</p>
 
-  <div v-if="getUserAlliance === 'null'">
+  <p>MEMBER COUNT: {{ alliance.members }}</p>
+
+  <div v-for="user in alliance.users" v-bind:key="user.username">
+    {{ user.id }}. {{ user.username }}
+  </div>
+
+  <div v-if="userAlliance === null && isLoggedIn === true">
     <button class="btn btn-primary" @click="joinAlliance()">Join Alliance</button>
   </div>
 
-  <div v-if="getUserAlliance != 'null' && isLoggedIn === true">
+  <div v-if="userAlliance != null && isLoggedIn === true">
     <button class="btn btn-primary" @click="leaveAlliance()">Leave Alliance</button>
   </div>
 
   <div v-if="isLoggedIn === false">
     Please Log In To Join An Alliance!
-  </div>
-
-  <div v-for="user in alliance.users" v-bind:key="user.username">
-    {{ user.id }}. {{ user.username }}
   </div>
 
 </template>
