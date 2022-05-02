@@ -96,7 +96,7 @@ export default {
       <div class="card h-100">
         <div class="card-body">
           <h5 class="card-title">{{ alliance.name }}</h5>
-          <h6>by {{ alliance.id }}</h6>
+          <h6>by {{ alliance.leader }}</h6>
           <img v-bind:src="alliance.icon" />
           <div class="cut-text">
             {{ alliance.description }}
