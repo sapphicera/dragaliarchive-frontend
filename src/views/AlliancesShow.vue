@@ -101,10 +101,15 @@ export default {
 
           <div class="modal-body">
             <div>
-              <div>
-                <label>Choose User to Transfer Ownership To:</label>
-                <input type="text" v-model="newAllianceParams.username" />
-              </div>
+              <label>Choose User to Transfer Ownership To: </label>
+
+              <select v-model="newAllianceParams.username">
+                <option disabled value="">Select a User</option>
+                <option v-for="user in alliance.users" :value="user.username" v-bind:key="user.username">
+                  {{ user.username }}
+                </option>
+              </select>
+
             </div>
           </div>
 
