@@ -66,7 +66,7 @@ export default {
     <br /> <br />
   </div>
 
-  <SubmitModal type="createNewAlliance" title="Create New Alliance" @submit-function="createAlliance()">
+  <SubmitModal type="createNewAlliance" title="Create New Alliance" submit="Create" @submit-function="createAlliance()">
     <div class="modal-body">
       <div>
         <label>Name:</label>
@@ -86,7 +86,6 @@ export default {
         :description="alliance.description" />
     </div>
   </div>
-
 </template>
 
 <style>

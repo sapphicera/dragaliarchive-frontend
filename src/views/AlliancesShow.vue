@@ -1,7 +1,9 @@
 <script>
 import axios from "axios";
+import SubmitModal from "@/components/SubmitModal.vue";
 
 export default {
+  components: { SubmitModal },
   data: function () {
     return {
       alliance: {},
@@ -21,35 +23,35 @@ export default {
     }
     axios.get(`/users/${this.getUserUsername}.json`).then((response) => {
       this.userAlliance = response.data.alliance_id;
-    })
+    });
   },
   methods: {
     showAlliance: function () {
       axios.get(`/alliances/${this.$route.params.name}.json`).then((response) => {
         this.alliance = response.data;
         this.newAllianceParams = response.data;
-      })
+      });
     },
     joinAlliance: function () {
       axios.post(`/alliances/${this.alliance.name}/join`).then(() => {
         window.location.reload();
-      })
+      });
     },
     leaveAlliance: function () {
       axios.delete(`/alliances/${this.alliance.name}/leave`).then(() => {
         window.location.reload();
-      })
+      });
     },
     deleteAlliance: function () {
       axios.delete(`/alliances/${this.alliance.name}`).then(() => {
         this.$router.push("/alliances");
-      })
+      });
     },
     updateAlliance: function () {
       console.log(this.newAllianceParams);
       axios.patch(`/alliances/${this.alliance.id}.json`, this.newAllianceParams).then(() => {
         window.location.reload();
-      })
+      });
     }
   },
 };
@@ -74,12 +76,40 @@ export default {
   </div>
 
   <div v-if="userAlliance === alliance.id && isLoggedIn === true && getUserUsername != alliance.leader">
-    <button class="btn btn-primary" @click="leaveAlliance()">Leave Alliance</button>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#leaveAlliance">Leave
+      Alliance</button>
+
+    <SubmitModal type="leaveAlliance" title="Leaving Alliance Confirmation" submit="Leave Alliance"
+      @submit-function="leaveAlliance()">
+      <div class="modal-body">
+        <div>
+          <label>Are You Sure You Want To Leave {{ alliance.name }}?</label>
+        </div>
+      </div>
+    </SubmitModal>
+
   </div>
 
   <div
     v-if="userAlliance === alliance.id && isLoggedIn === true && getUserUsername === alliance.leader && alliance.members < 2">
-    <button class="btn btn-primary" @click="deleteAlliance()">Disband Alliance</button>
+
+    <!-- <button class="btn btn-primary" @click="deleteAlliance()">Disband Alliance</button> -->
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteAlliance">Disband
+      Alliance</button>
+
+    <SubmitModal type="deleteAlliance" title="Disband Alliance Confirmation" submit="Disband Alliance"
+      @submit-function="deleteAlliance()">
+      <div class="modal-body">
+        <div>
+          <label>Are You Sure You Want To Disband {{ alliance.name }}?</label>
+          <label>WARNING: THIS ACTION CANNOT BE UNDONE</label>
+        </div>
+      </div>
+    </SubmitModal>
+
+
   </div>
 
   <div

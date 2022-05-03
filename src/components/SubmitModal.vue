@@ -1,7 +1,7 @@
 <script>
 export default {
   name: "SubmitModal",
-  props: ['type', 'title'],
+  props: ['type', 'title', 'submit'],
   emits: ['submit-function']
 }
 </script>
@@ -18,13 +18,12 @@ export default {
           <slot />
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" value="Submit" class="btn btn-primary">Create</button>
+            <button type="submit" value="Submit" class="btn btn-primary" data-bs-dismiss="modal">{{ submit }}</button>
           </div>
         </div>
       </form>
     </div>
   </div>
-
 </template>
 
 <style scoped>
