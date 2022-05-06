@@ -15,6 +15,7 @@ export default {
       alliances: [],
       searchTerm: "",
       newAllianceParams: {},
+      images: []
     };
   },
   created: function () {
@@ -28,8 +29,12 @@ export default {
     axios.get(`/users/${this.getUserUsername}.json`).then((response) => {
       this.userAlliance = response.data.alliance_id;
     })
+    this.importAll(require.context('../assets/alliance-icons/', true, /\.png$/));
   },
   methods: {
+    importAll: function (r) {
+      r.keys().forEach(key => (this.images.push({ pathLong: r(key), pathShort: key })));
+    },
     indexAlliances: function () {
       axios.get("/alliances.json").then((response) => {
         console.log(response.data);
@@ -67,15 +72,36 @@ export default {
   </div>
 
   <SubmitModal type="createNewAlliance" title="Create New Alliance" submit="Create" @submit-function="createAlliance()">
+
     <div class="modal-body">
-      <div>
-        <label>Name:</label>
-        <input type="text" v-model="newAllianceParams.name" />
+
+      <div class="row g-2">
+        <div class="col">
+          <label class="col-form-label">Alliance Name: </label>
+        </div>
+        <div class="col-9">
+          <input type="text" v-model="newAllianceParams.name" class="form-control">
+        </div>
       </div>
-      <div>
-        <label>Description:</label>
-        <input type="text" v-model="newAllianceParams.description" />
+      <br />
+      <div class="mb-3">
+        <label class="form-label">Short Description</label>
+        <textarea type="text" v-model="newAllianceParams.description" class="form-control" rows="3"></textarea>
       </div>
+
+      <label>Select an Alliance Icon:</label><br /><br />
+      <div class="container">
+        <div class="selectalli">
+          <div class="row row-cols-5 gy-2">
+
+            <div v-for="icon in images" v-bind:key="icon" class="col">
+              <button type="button" class="btn btn-light"><img :src="icon.pathLong" /></button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
     </div>
   </SubmitModal>
 
@@ -92,5 +118,14 @@ export default {
 img {
   height: 100px;
   width: 100px;
+}
+
+.selectalli img {
+  height: 60px;
+  width: 60px;
+  /* border: 1px solid blue;
+  border-style: dashed;
+  border-radius: 4px;
+  padding: 5px; */
 }
 </style>
