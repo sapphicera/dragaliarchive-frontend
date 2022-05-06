@@ -6,6 +6,7 @@ export default {
     return {
       editProfileParams: {},
       errors: [],
+      images: [],
     };
   },
   created: function () {
@@ -15,7 +16,13 @@ export default {
       delete this.editProfileParams['alliance_id']
     })
   },
+  mounted: function () {
+    this.importAll(require.context('../assets/character-icons/', true, /\.png$/));
+  },
   methods: {
+    importAll: function (r) {
+      r.keys().forEach(key => (this.images.push({ pathLong: r(key), pathShort: key })));
+    },
     editProfile: function () {
       console.log("editing...");
       axios.patch(`/users/${this.$route.params.username}.json`, this.editProfileParams).then((response) => {
@@ -24,7 +31,10 @@ export default {
       }).catch((error) => {
         this.errors = error.response.data.errors;
       });
-    }
+    },
+    pickIcon: function (icon) {
+      this.editProfileParams.icon = icon;
+    },
   },
 };
 </script>
@@ -72,10 +82,31 @@ export default {
       <input type="text" v-model="editProfileParams.description" />
     </div>
 
+    <br />
+    <div>
+      <label>Choose an Icon</label>
+      <br />
+      <div class="container">
+        <div class="selectalli">
+          <div class="row row-cols-auto gx-1 gy-1 justify-content-center">
+            <div v-for="icon in images" v-bind:key="icon" class="col">
+              <input type="radio" class="btn-check" name="options" :id="icon.pathLong" autocomplete="off">
+              <label class="btn btn-outline-secondary" :for="icon.pathLong" @click="pickIcon(icon.pathLong)">
+                <img :src="icon.pathLong" />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
     <input type="submit" value="Submit" />
-
   </form>
 </template>
 
 <style>
+.selectalli img {
+  height: 100px;
+  width: 100px;
+}
 </style>
