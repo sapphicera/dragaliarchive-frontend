@@ -14,8 +14,8 @@ export default {
       userAlliance: null,
       alliances: [],
       searchTerm: "",
-      newAllianceParams: {},
-      images: []
+      newAllianceParams: { icon: "" },
+      images: [],
     };
   },
   created: function () {
@@ -37,7 +37,6 @@ export default {
     },
     indexAlliances: function () {
       axios.get("/alliances.json").then((response) => {
-        console.log(response.data);
         this.alliances = response.data;
       })
     },
@@ -49,11 +48,13 @@ export default {
       })
     },
     createAlliance: function () {
-      axios.post("/alliances.json", this.newAllianceParams).then((response) => {
-        console.log(response.data);
+      axios.post("/alliances.json", this.newAllianceParams).then(() => {
         window.location.reload();
       })
     },
+    pickIcon: function (icon) {
+      this.newAllianceParams.icon = icon;
+    }
   },
 };
 </script>
@@ -72,7 +73,6 @@ export default {
   </div>
 
   <SubmitModal type="createNewAlliance" title="Create New Alliance" submit="Create" @submit-function="createAlliance()">
-
     <div class="modal-body">
 
       <div class="row g-2">
@@ -83,7 +83,9 @@ export default {
           <input type="text" v-model="newAllianceParams.name" class="form-control">
         </div>
       </div>
+
       <br />
+
       <div class="mb-3">
         <label class="form-label">Short Description</label>
         <textarea type="text" v-model="newAllianceParams.description" class="form-control" rows="3"></textarea>
@@ -92,10 +94,13 @@ export default {
       <label>Select an Alliance Icon:</label><br /><br />
       <div class="container">
         <div class="selectalli">
-          <div class="row row-cols-5 gy-2">
+          <div class="row row-cols-auto gx-1 gy-1 justify-content-center">
 
             <div v-for="icon in images" v-bind:key="icon" class="col">
-              <button type="button" class="btn btn-light"><img :src="icon.pathLong" /></button>
+              <input type="radio" class="btn-check" name="options" :id="icon.pathLong" autocomplete="off">
+              <label class="btn btn-outline-secondary" :for="icon.pathLong" @click="pickIcon(icon.pathLong)">
+                <img :src="icon.pathLong" />
+              </label>
             </div>
 
           </div>
@@ -121,11 +126,7 @@ img {
 }
 
 .selectalli img {
-  height: 60px;
-  width: 60px;
-  /* border: 1px solid blue;
-  border-style: dashed;
-  border-radius: 4px;
-  padding: 5px; */
+  height: 50px;
+  width: 50px;
 }
 </style>
