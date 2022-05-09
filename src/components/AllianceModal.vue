@@ -7,7 +7,7 @@ export default {
   data: function () {
     return {
       images: [],
-      newAllianceParams: { icon: "" },
+      newAllianceParams: {},
     };
   },
   mounted: function () {

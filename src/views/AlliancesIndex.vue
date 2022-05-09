@@ -14,7 +14,7 @@ export default {
       userAlliance: null,
       alliances: [],
       searchTerm: "",
-      newAllianceParams: { icon: "" },
+      newAllianceParams: {},
       images: [],
     };
   },

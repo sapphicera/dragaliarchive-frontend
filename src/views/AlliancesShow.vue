@@ -1,11 +1,11 @@
 <script>
 import axios from "axios";
 import SubmitModal from "@/components/SubmitModal.vue";
-import UserCard from "@/components/UserCard.vue";
+import UserCards from "@/components/UserCards.vue";
 import AllianceModal from "@/components/AllianceModal.vue";
 
 export default {
-  components: { SubmitModal, UserCard, AllianceModal },
+  components: { SubmitModal, UserCards, AllianceModal },
   data: function () {
     return {
       alliance: {},
@@ -30,6 +30,11 @@ export default {
   methods: {
     pickIcon: function (icon) {
       this.newAllianceParams.icon = icon;
+    },
+    kickUser: function (username) {
+      axios.delete(`/alliances/${this.alliance.name}/kick/${username}`).then(() => {
+        window.location.reload();
+      });
     },
     showAlliance: function () {
       axios.get(`/alliances/${this.$route.params.name}.json`).then((response) => {
@@ -125,7 +130,6 @@ export default {
 
   <SubmitModal type="transferOwnershipModal" title="Transfer Ownership" submit="Submit"
     @submit-function="updateAlliance()">
-
     <div>
       <label>Choose User to Transfer Ownership To: </label>
 
@@ -137,7 +141,6 @@ export default {
       </select>
 
     </div>
-
   </SubmitModal>
 
   <!-- Log In to Join Alliance -->
@@ -150,20 +153,14 @@ export default {
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAllianceModal">
       Edit Alliance Settings
     </button>
+
+    <AllianceModal type="editAllianceModal" title="Edit Alliance" submit="Submit Changes"
+      @submit-function="updateAlliance()" @change-icon="pickIcon($event)" :newName="newAllianceParams.name"
+      :newDescription="newAllianceParams.description" :newIcon="newAllianceParams.icon" />
   </div>
 
-  <AllianceModal type="editAllianceModal" title="Edit Alliance" submit="Submit Changes"
-    @submit-function="updateAlliance()" @change-icon="pickIcon($event)" :newName="newAllianceParams.name"
-    :newDescription="newAllianceParams.description" :newIcon="newAllianceParams.icon" />
-
-  <!-- Display Current Users in Alliance -->
-  <div class="container"><br />
-    <div class="row">
-      <div class="col-sm-4 py-md-2" v-for="user in alliance.users" v-bind:key="user.username">
-        <UserCard :username="user.username" :ign="user.ign" :icon="user.icon" :level="user.level" />
-      </div>
-    </div>
-  </div>
+  <!-- Display Current Users in Alliance & Kick If Owner -->
+  <UserCards @kick-user="kickUser($event)" :allianceUserList="alliance.users" />
 
 </template>
 
