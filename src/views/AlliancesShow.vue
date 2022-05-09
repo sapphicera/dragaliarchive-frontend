@@ -1,9 +1,10 @@
 <script>
 import axios from "axios";
 import SubmitModal from "@/components/SubmitModal.vue";
+import UserCard from "@/components/UserCard.vue";
 
 export default {
-  components: { SubmitModal },
+  components: { SubmitModal, UserCard },
   data: function () {
     return {
       alliance: {},
@@ -67,10 +68,6 @@ export default {
 
   ALLIANCE LEADER: {{ alliance.leader }} <br /> <br />
 
-  <div v-for="user in alliance.users" v-bind:key="user.username">
-    {{ user.id }}. {{ user.username }}
-  </div>
-
   <div v-if="userAlliance === null && isLoggedIn === true">
     <button class="btn btn-primary" @click="joinAlliance()">Join Alliance</button>
   </div>
@@ -91,10 +88,9 @@ export default {
 
   </div>
 
+  <!-- Disband Alliance if it is Empty -->
   <div
     v-if="userAlliance === alliance.id && isLoggedIn === true && getUserUsername === alliance.leader && alliance.members < 2">
-
-    <!-- <button class="btn btn-primary" @click="deleteAlliance()">Disband Alliance</button> -->
 
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteAlliance">Disband
       Alliance</button>
@@ -109,9 +105,9 @@ export default {
       </div>
     </SubmitModal>
 
-
   </div>
 
+  <!-- Transfer Ownership to Another User -->
   <div
     v-if="userAlliance === alliance.id && isLoggedIn === true && getUserUsername === alliance.leader && alliance.members > 1">
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#transferOwnershipModal">
@@ -119,41 +115,37 @@ export default {
     </button>
   </div>
 
-  <div class="modal fade" id="transferOwnershipModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <form v-on:submit.prevent="updateAlliance()">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Transfer Ownership</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
+  <SubmitModal type="transferOwnershipModal" title="Transfer Ownership" submit="Submit"
+    @submit-function="updateAlliance()">
 
-          <div class="modal-body">
-            <div>
-              <label>Choose User to Transfer Ownership To: </label>
+    <div>
+      <label>Choose User to Transfer Ownership To: </label>
 
-              <select v-model="newAllianceParams.username">
-                <option disabled value="">Select a User</option>
-                <option v-for="user in alliance.users" :value="user.username" v-bind:key="user.username">
-                  {{ user.username }}
-                </option>
-              </select>
+      <select v-model="newAllianceParams.username">
+        <option disabled value="">Select a User</option>
+        <option v-for="user in alliance.users" :value="user.username" v-bind:key="user.username">
+          {{ user.username }}
+        </option>
+      </select>
 
-            </div>
-          </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
-          </div>
-        </div>
-      </form>
     </div>
-  </div>
 
+  </SubmitModal>
+
+  <!-- Log In to Join Alliance -->
   <div v-if="isLoggedIn === false">
     Please Log In To Join An Alliance!
+  </div>
+
+  <br />
+
+  <!-- Display Current Users in Alliance -->
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4 py-md-2" v-for="user in alliance.users" v-bind:key="user.username">
+        <UserCard :username="user.username" :ign="user.ign" :icon="user.icon" :level="user.level" />
+      </div>
+    </div>
   </div>
 
 </template>

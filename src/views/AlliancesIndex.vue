@@ -110,11 +110,13 @@ export default {
     </div>
   </SubmitModal>
 
-  <div class="row">
-    <p><input type="text" v-model="searchTerm"></p>
-    <div class="col-sm-4 py-md-2" v-for="alliance in filterAlliances()" v-bind:key="alliance.id">
-      <AllianceCard :name="alliance.name" :leader="alliance.leader" :icon="alliance.icon"
-        :description="alliance.description" />
+  <div class="container">
+    <div class="row">
+      <p><input type="text" v-model="searchTerm"></p>
+      <div class="col-sm-4 py-md-2" v-for="alliance in filterAlliances()" v-bind:key="alliance.id">
+        <AllianceCard :name="alliance.name" :leader="alliance.leader" :icon="alliance.icon"
+          :description="alliance.description" />
+      </div>
     </div>
   </div>
 </template>

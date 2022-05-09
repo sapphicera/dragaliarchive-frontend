@@ -15,7 +15,11 @@ export default {
             <h5 class="modal-title" id="submitModalLabel">{{ title }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <slot />
+
+          <div class="modal-body">
+            <slot />
+          </div>
+
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="submit" value="Submit" class="btn btn-primary" data-bs-dismiss="modal">{{ submit }}</button>
