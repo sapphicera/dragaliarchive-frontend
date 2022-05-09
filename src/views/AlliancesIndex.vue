@@ -73,40 +73,36 @@ export default {
   </div>
 
   <SubmitModal type="createNewAlliance" title="Create New Alliance" submit="Create" @submit-function="createAlliance()">
-    <div class="modal-body">
-
-      <div class="row g-2">
-        <div class="col">
-          <label class="col-form-label">Alliance Name: </label>
-        </div>
-        <div class="col-9">
-          <input type="text" v-model="newAllianceParams.name" class="form-control">
-        </div>
+    <div class="row g-2">
+      <div class="col">
+        <label class="col-form-label">Alliance Name: </label>
       </div>
-
-      <br />
-
-      <div class="mb-3">
-        <label class="form-label">Short Description</label>
-        <textarea type="text" v-model="newAllianceParams.description" class="form-control" rows="3"></textarea>
+      <div class="col-9">
+        <input type="text" v-model="newAllianceParams.name" class="form-control">
       </div>
+    </div>
 
-      <label>Select an Alliance Icon:</label><br /><br />
-      <div class="container">
-        <div class="selectalli">
-          <div class="row row-cols-auto gx-1 gy-1 justify-content-center">
+    <br />
 
-            <div v-for="icon in images" v-bind:key="icon" class="col">
-              <input type="radio" class="btn-check" name="options" :id="icon.pathLong" autocomplete="off">
-              <label class="btn btn-outline-secondary" :for="icon.pathLong" @click="pickIcon(icon.pathLong)">
-                <img :src="icon.pathLong" />
-              </label>
-            </div>
+    <div class="mb-3">
+      <label class="form-label">Short Description</label>
+      <textarea type="text" v-model="newAllianceParams.description" class="form-control" rows="3"></textarea>
+    </div>
 
+    <label>Select an Alliance Icon:</label><br /><br />
+    <div class="container">
+      <div class="selectalli">
+        <div class="row row-cols-auto gx-1 gy-1 justify-content-center">
+
+          <div v-for="icon in images" v-bind:key="icon" class="col">
+            <input type="radio" class="btn-check" name="options" :id="icon.pathLong" autocomplete="off">
+            <label class="btn btn-outline-secondary" :for="icon.pathLong" @click="pickIcon(icon.pathLong)">
+              <img :src="icon.pathLong" />
+            </label>
           </div>
+
         </div>
       </div>
-
     </div>
   </SubmitModal>
 
