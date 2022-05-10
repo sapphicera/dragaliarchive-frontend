@@ -1,20 +1,16 @@
 <script>
+import { useUserStore } from "@/stores/user";
 import axios from "axios";
 
 export default {
   data: function () {
     return {
       user: {},
-      getUserUsername: "",
+      store: useUserStore(),
     };
   },
   created: function () {
     this.showUser();
-  },
-  mounted: function () {
-    if (localStorage.user_username && !!localStorage.jwt) {
-      this.getUserUsername = localStorage.user_username;
-    }
   },
   methods: {
     showUser: function () {
@@ -44,7 +40,7 @@ export default {
     User Is Eligable To Join An Alliance!
   </div>
 
-  <div v-if="user.username === getUserUsername">
+  <div v-if="user.username === store.getUserUsername">
     <router-link v-bind:to="`/users/${user.username}/edit`">Edit Profile</router-link>
   </div>
 </template>

@@ -2,6 +2,7 @@
 import axios from "axios";
 import AllianceCard from "@/components/AllianceCard.vue";
 import SubmitModal from "@/components/SubmitModal.vue";
+import { useUserStore } from "@/stores/user";
 
 export default {
   components: {
@@ -10,7 +11,7 @@ export default {
   },
   data: function () {
     return {
-      isLoggedIn: false,
+      store: useUserStore(),
       userAlliance: null,
       alliances: [],
       searchTerm: "",
@@ -22,13 +23,11 @@ export default {
     this.indexAlliances();
   },
   mounted: function () {
-    if (localStorage.jwt !== null) {
-      this.getUserUsername = localStorage.user_username;
-      this.isLoggedIn = !!localStorage.jwt;
+    if (this.store.getLoggedIn === true) {
+      axios.get(`/users/${this.store.getUserUsername}.json`).then((response) => {
+        this.userAlliance = response.data.alliance_id;
+      })
     }
-    axios.get(`/users/${this.getUserUsername}.json`).then((response) => {
-      this.userAlliance = response.data.alliance_id;
-    })
     this.importAll(require.context('../assets/alliance-icons/', true, /\.png$/));
   },
   methods: {
@@ -66,7 +65,7 @@ export default {
     <br />
   </div>
 
-  <div v-if="userAlliance === null && isLoggedIn === true">
+  <div v-if="userAlliance === null && store.getLoggedIn === true">
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNewAlliance">Create New
       Alliance</button>
     <br /> <br />

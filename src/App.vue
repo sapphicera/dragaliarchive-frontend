@@ -1,36 +1,39 @@
 <template>
+  <div v-if="store.getLoggedIn">
+    {{ store.getLoggedIn }} || {{ store.getUserId }} || {{ store.getUserUsername }}
+  </div>
+
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/alliances">Alliances</router-link> |
 
-    <div v-if="!isLoggedIn">
+    <div v-if="!store.getLoggedIn">
       <router-link to="/signup">Sign Up</router-link> |
       <router-link to="/login">Log In</router-link> |
     </div>
 
-    <div v-if="isLoggedIn">
-      <router-link :to="`/users/${this.getUserUsername}`">Profile</router-link>
+    <div v-if="store.getLoggedIn">
+      <router-link :to="`/users/${store.getUserUsername}`">Profile</router-link>
       <router-link to="/logout">Log Out</router-link>
     </div>
-
   </nav>
+
   <router-view />
 </template>
 
-<script>
+<script>import { useUserStore } from "./stores/user";
+
 export default {
   data: function () {
     return {
-      isLoggedIn: false,
-      getUserId: 0,
-      getUserUsername: "",
+      store: useUserStore(),
     }
   },
   watch: {
     $route: function () {
-      this.isLoggedIn = !!localStorage.jwt;
-      this.getUserId = localStorage.user_id;
-      this.getUserUsername = localStorage.user_username;
+      this.store.getLoggedIn = !!localStorage.jwt;
+      this.store.getUserId = localStorage.user_id;
+      this.store.getUserUsername = localStorage.user_username;
     }
   }
 }
