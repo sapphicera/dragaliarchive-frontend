@@ -12,8 +12,6 @@ export default {
       store: useUserStore(),
       alliance: {},
       newAllianceParams: {},
-      // isLoggedIn: false,
-      // getUserUsername: "",
       userAlliance: null,
     };
   },
@@ -128,10 +126,10 @@ export default {
   </div>
 
   <SubmitModal type="transferOwnershipModal" title="Transfer Ownership" submit="Submit"
-    @submit-function="updateAlliance()">
+    @submit-function="updateAlliance(newAllianceParams)">
     <div>
       <label>Choose User to Transfer Ownership To: </label>
-
+      {{ newAllianceParams }}
       <select v-model="newAllianceParams.username">
         <option disabled value="">Select a User</option>
         <option v-for="user in alliance.users" :value="user.username" v-bind:key="user.username">
