@@ -3,7 +3,7 @@ import SubmitModal from "./SubmitModal.vue";
 
 export default {
   name: "UserCard",
-  props: ["allianceUserList"],
+  props: ["allianceUserList", "alliOwner", "userUsername"],
   emits: ['kick-user'],
   components: { SubmitModal },
 
@@ -43,16 +43,17 @@ export default {
             <router-link :to="{
               name: 'users-profile', params: { username: user.username }
             }" class="btn btn-primary">View Profile</router-link>
+            <span v-if="alliOwner === userUsername">
+              <button @click="assignUser(user.username)" type="button" class="btn btn-danger" data-bs-toggle="modal"
+                data-bs-target="#kickUser">
+                Kick
+              </button>
 
-            <button @click="assignUser(user.username)" type="button" class="btn btn-danger" data-bs-toggle="modal"
-              data-bs-target="#kickUser">
-              Kick
-            </button>
-
-            <SubmitModal @submit-function="kickUser(this.cardUser)" type="kickUser" title="Confirm User Kick"
-              submit="Kick User from Alliance">
-              Are You Sure You Want To Kick {{ this.cardUser }} From The Alliance?
-            </SubmitModal>
+              <SubmitModal @submit-function="kickUser(this.cardUser)" type="kickUser" title="Confirm User Kick"
+                submit="Kick User from Alliance">
+                Are You Sure You Want To Kick {{ this.cardUser }} From The Alliance?
+              </SubmitModal>
+            </span>
           </div>
         </div>
 

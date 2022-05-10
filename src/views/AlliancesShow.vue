@@ -129,14 +129,12 @@ export default {
     @submit-function="updateAlliance(newAllianceParams)">
     <div>
       <label>Choose User to Transfer Ownership To: </label>
-      {{ newAllianceParams }}
       <select v-model="newAllianceParams.username">
         <option disabled value="">Select a User</option>
         <option v-for="user in alliance.users" :value="user.username" v-bind:key="user.username">
           {{ user.username }}
         </option>
       </select>
-
     </div>
   </SubmitModal>
 
@@ -156,7 +154,8 @@ export default {
   </div>
 
   <!-- Display Current Users in Alliance & Kick If Owner -->
-  <UserCards @kick-user="kickUser($event)" :allianceUserList="alliance.users" />
+  <UserCards @kick-user="kickUser($event)" :allianceUserList="alliance.users" :alliOwner="alliance.leader"
+    :userUsername="store.getUserUsername" />
 
 </template>
 
