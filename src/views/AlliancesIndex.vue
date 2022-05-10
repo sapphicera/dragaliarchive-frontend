@@ -1,13 +1,13 @@
 <script>
 import axios from "axios";
-import AllianceCard from "@/components/AllianceCard.vue";
-import SubmitModal from "@/components/SubmitModal.vue";
 import { useUserStore } from "@/stores/user";
+import AllianceCard from "@/components/AllianceCard.vue";
+import AllianceCreateModal from "@/components/AllianceCreateModal.vue";
 
 export default {
   components: {
     AllianceCard,
-    SubmitModal
+    AllianceCreateModal
   },
   data: function () {
     return {
@@ -16,7 +16,6 @@ export default {
       alliances: [],
       searchTerm: "",
       newAllianceParams: {},
-      images: [],
     };
   },
   created: function () {
@@ -28,11 +27,10 @@ export default {
         this.userAlliance = response.data.alliance_id;
       })
     }
-    this.importAll(require.context('../assets/alliance-icons/', true, /\.png$/));
   },
   methods: {
-    importAll: function (r) {
-      r.keys().forEach(key => (this.images.push({ pathLong: r(key), pathShort: key })));
+    pickIcon: function (icon) {
+      this.newAllianceParams.icon = icon;
     },
     indexAlliances: function () {
       axios.get("/alliances.json").then((response) => {
@@ -46,14 +44,11 @@ export default {
         return lowerTitle.includes(lowerSearchTerm);
       })
     },
-    createAlliance: function () {
-      axios.post("/alliances.json", this.newAllianceParams).then(() => {
+    createAlliance: function (params) {
+      axios.post("/alliances.json", params).then(() => {
         window.location.reload();
       })
     },
-    pickIcon: function (icon) {
-      this.newAllianceParams.icon = icon;
-    }
   },
 };
 </script>
@@ -69,41 +64,10 @@ export default {
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNewAlliance">Create New
       Alliance</button>
     <br /> <br />
+
+    <AllianceCreateModal type="createNewAlliance" title="Create New Alliance" submit="Create"
+      @submit-function="createAlliance($event)" @change-icon="pickIcon($event)" />
   </div>
-
-  <SubmitModal type="createNewAlliance" title="Create New Alliance" submit="Create" @submit-function="createAlliance()">
-    <div class="row g-2">
-      <div class="col">
-        <label class="col-form-label">Alliance Name: </label>
-      </div>
-      <div class="col-9">
-        <input type="text" v-model="newAllianceParams.name" class="form-control">
-      </div>
-    </div>
-
-    <br />
-
-    <div class="mb-3">
-      <label class="form-label">Short Description</label>
-      <textarea type="text" v-model="newAllianceParams.description" class="form-control" rows="3"></textarea>
-    </div>
-
-    <label>Select an Alliance Icon:</label><br /><br />
-    <div class="container">
-      <div class="selectalli">
-        <div class="row row-cols-auto gx-1 gy-1 justify-content-center">
-
-          <div v-for="icon in images" v-bind:key="icon" class="col">
-            <input type="radio" class="btn-check" name="options" :id="icon.pathLong" autocomplete="off">
-            <label class="btn btn-outline-secondary" :for="icon.pathLong" @click="pickIcon(icon.pathLong)">
-              <img :src="icon.pathLong" />
-            </label>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </SubmitModal>
 
   <div class="container">
     <div class="row">
@@ -120,10 +84,5 @@ export default {
 img {
   height: 100px;
   width: 100px;
-}
-
-.selectalli img {
-  height: 50px;
-  width: 50px;
 }
 </style>

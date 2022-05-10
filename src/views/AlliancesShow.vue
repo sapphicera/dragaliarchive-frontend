@@ -1,17 +1,19 @@
 <script>
 import axios from "axios";
+import { useUserStore } from "@/stores/user";
 import SubmitModal from "@/components/SubmitModal.vue";
 import UserCards from "@/components/UserCards.vue";
-import AllianceModal from "@/components/AllianceModal.vue";
+import AllianceEditModal from "@/components/AllianceEditModal.vue";
 
 export default {
-  components: { SubmitModal, UserCards, AllianceModal },
+  components: { SubmitModal, UserCards, AllianceEditModal },
   data: function () {
     return {
+      store: useUserStore(),
       alliance: {},
       newAllianceParams: {},
-      isLoggedIn: false,
-      getUserUsername: "",
+      // isLoggedIn: false,
+      // getUserUsername: "",
       userAlliance: null,
     };
   },
@@ -19,13 +21,11 @@ export default {
     this.showAlliance();
   },
   mounted: function () {
-    if (localStorage.jwt !== null) {
-      this.getUserUsername = localStorage.user_username;
-      this.isLoggedIn = !!localStorage.jwt;
+    if (this.store.getLoggedIn === true) {
+      axios.get(`/users/${this.store.getUserUsername}.json`).then((response) => {
+        this.userAlliance = response.data.alliance_id;
+      })
     }
-    axios.get(`/users/${this.getUserUsername}.json`).then((response) => {
-      this.userAlliance = response.data.alliance_id;
-    });
   },
   methods: {
     pickIcon: function (icon) {
@@ -57,10 +57,9 @@ export default {
         this.$router.push("/alliances");
       });
     },
-    updateAlliance: function () {
-      console.log(this.newAllianceParams);
-      axios.patch(`/alliances/${this.alliance.id}.json`, this.newAllianceParams).then(() => {
-        window.location.reload();
+    updateAlliance: function (params) {
+      axios.patch(`/alliances/${this.alliance.id}.json`, params).then(() => {
+        this.$router.push("/alliances");
       });
     }
   },
@@ -82,12 +81,12 @@ export default {
   <br />
 
   <!-- Allow User to Join Alliance -->
-  <div v-if="userAlliance === null && isLoggedIn === true">
+  <div v-if="userAlliance === null && store.getLoggedIn === true">
     <button class="btn btn-primary" @click="joinAlliance()">Join Alliance</button>
   </div>
 
   <!-- Allow User to Leave Alliance -->
-  <div v-if="userAlliance === alliance.id && isLoggedIn === true && getUserUsername != alliance.leader">
+  <div v-if="userAlliance === alliance.id && store.getLoggedIn === true && store.getUserUsername != alliance.leader">
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#leaveAlliance">Leave
       Alliance</button>
 
@@ -103,7 +102,7 @@ export default {
 
   <!-- Disband Alliance if it is Empty -->
   <div
-    v-if="userAlliance === alliance.id && isLoggedIn === true && getUserUsername === alliance.leader && alliance.members < 2">
+    v-if="userAlliance === alliance.id && store.getLoggedIn === true && store.getUserUsername === alliance.leader && alliance.members < 2">
 
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteAlliance">Disband
       Alliance</button>
@@ -122,7 +121,7 @@ export default {
 
   <!-- Transfer Ownership to Another User -->
   <div
-    v-if="userAlliance === alliance.id && isLoggedIn === true && getUserUsername === alliance.leader && alliance.members > 1">
+    v-if="userAlliance === alliance.id && store.getLoggedIn === true && store.getUserUsername === alliance.leader && alliance.members > 1">
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#transferOwnershipModal">
       Transfer Ownership
     </button>
@@ -144,19 +143,18 @@ export default {
   </SubmitModal>
 
   <!-- Log In to Join Alliance -->
-  <div v-if="isLoggedIn === false">
+  <div v-if="store.getLoggedIn === false">
     Please Log In To Join An Alliance!
   </div>
 
   <!-- Edit Current Alliance Settings -->
-  <div v-if="userAlliance === alliance.id && isLoggedIn === true && getUserUsername === alliance.leader"><br />
+  <div v-if="userAlliance === alliance.id && store.getLoggedIn === true && store.getUserUsername === alliance.leader">
+    <br />
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAllianceModal">
       Edit Alliance Settings
     </button>
-
-    <AllianceModal type="editAllianceModal" title="Edit Alliance" submit="Submit Changes"
-      @submit-function="updateAlliance()" @change-icon="pickIcon($event)" :newName="newAllianceParams.name"
-      :newDescription="newAllianceParams.description" :newIcon="newAllianceParams.icon" />
+    <AllianceEditModal type="editAllianceModal" title="Edit Alliance" submit="Submit Changes"
+      :prevParams="newAllianceParams" @submit-function="updateAlliance($event)" @change-icon="pickIcon($event)" />
   </div>
 
   <!-- Display Current Users in Alliance & Kick If Owner -->
