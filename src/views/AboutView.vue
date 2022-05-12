@@ -1,9 +1,9 @@
 <script>
 import axios from "axios";
-import ComicCard from "@/components/ComicCard.vue";
+import ComicCards from "@/components/ComicCards.vue";
 
 export default {
-  components: { ComicCard },
+  components: { ComicCards },
   data: function () {
     return {
       comics: [],
@@ -56,7 +56,21 @@ export default {
     </div>
   </div>
 
-  <ComicCard :comicList="comics" />
+  <ComicCards :comicList="comics" />
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <style>
