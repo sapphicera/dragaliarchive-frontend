@@ -43,9 +43,14 @@ const routes = [
     component: () => import('../views/AlliancesShow.vue')
   },
   {
-    path: '/about',
-    name: 'about',
-    component: () => import('../views/AboutView.vue')
+    path: '/comics',
+    name: 'comics-index',
+    component: () => import('../views/ComicsIndex.vue')
+  },
+  {
+    path: '/comics/:id',
+    name: 'comics-show',
+    component: () => import('../views/ComicsShow.vue')
   },
   {
     path: '/404',

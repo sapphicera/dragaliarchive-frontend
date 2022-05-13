@@ -4,7 +4,7 @@
   </div>
 
   <nav>
-    <router-link to="/about">About</router-link> |
+    <router-link to="/comics">Comics</router-link> |
     <router-link to="/alliances">Alliances</router-link> |
 
     <div v-if="!store.getLoggedIn">
