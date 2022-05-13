@@ -2,9 +2,9 @@ import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    getLoggedIn: false,
-    getUserId: 0,
-    getUserUsername: "",
+    getLoggedIn: !!localStorage.jwt,
+    getUserId: localStorage.user_id,
+    getUserUsername: localStorage.user_username,
   }),
   actions: {
   },

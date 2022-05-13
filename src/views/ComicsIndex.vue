@@ -7,7 +7,6 @@ export default {
   data: function () {
     return {
       comics: [],
-      // search: "",
     };
   },
   created: function () {
@@ -21,25 +20,11 @@ export default {
         this.comics = response.data;
       })
     }
-    // newSearch: function () {
-    //   console.log("new search...");
-    //   axios.get(`/users.json?search_term=${this.search}`).then(response => {
-    //     console.log(response.data);
-    //     this.users = response.data;
-    //   });
-    // }
   },
 };
 </script>
 
 <template>
-  <!-- Search: <input type="text" v-model="search">
-  <button v-on:click="newSearch()">Search Comics</button>
-
-  <div v-for="user in users" v-bind:key="user.username">
-    {{ user.id }}: {{ user.username }}
-  </div> -->
-
   <div class="container">
     <div id="featuredCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
       <div class="carousel-inner">

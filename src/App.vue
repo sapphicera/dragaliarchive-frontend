@@ -1,27 +1,5 @@
-<template>
-  <div v-if="store.getLoggedIn">
-    {{ store.getLoggedIn }} || {{ store.getUserId }} || {{ store.getUserUsername }}
-  </div>
-
-  <nav>
-    <router-link to="/comics">Comics</router-link> |
-    <router-link to="/alliances">Alliances</router-link> |
-
-    <div v-if="!store.getLoggedIn">
-      <router-link to="/signup">Sign Up</router-link> |
-      <router-link to="/login">Log In</router-link> |
-    </div>
-
-    <div v-if="store.getLoggedIn">
-      <router-link :to="`/users/${store.getUserUsername}`">Profile</router-link>
-      <router-link to="/logout">Log Out</router-link>
-    </div>
-  </nav>
-
-  <router-view />
-</template>
-
-<script>import { useUserStore } from "./stores/user";
+<script>
+import { useUserStore } from "./stores/user";
 
 export default {
   data: function () {
@@ -35,9 +13,74 @@ export default {
       this.store.getUserId = localStorage.user_id;
       this.store.getUserUsername = localStorage.user_username;
     }
-  }
+  },
 }
 </script>
+
+<template>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">DragaliArchive</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- standard links & dropdown links to pages -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/comics">Comics</a>
+          </li>
+          <li class="nav-item" v-if="!store.getLoggedIn">
+            <a class="nav-link" :href="`/users/${store.getUserUsername}`">Profile</a>
+          </li>
+          <li class="nav-item" v-if="!store.getLoggedIn">
+            <a class="nav-link" href="/signup">Sign Up</a>
+          </li>
+          <li class="nav-item" v-if="!store.getLoggedIn">
+            <a class="nav-link" href="/login">Log In</a>
+          </li>
+
+          <span v-if="store.getLoggedIn">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Account
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="/">Saved Comics</a></li>
+                <li><a class="dropdown-item" href="/">Friend List</a></li>
+                <li><a class="dropdown-item" :href="`/users/${store.getUserUsername}/edit`">Edit Profile</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="/logout">Sign Out</a></li>
+              </ul>
+            </li>
+          </span>
+        </ul>
+
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+      </div>
+    </div>
+  </nav>
+
+  <div v-if="store.getLoggedIn">
+    {{ store.getLoggedIn }} || {{ store.getUserId }} || {{ store.getUserUsername }}
+  </div>
+
+  <router-view />
+
+</template>
 
 <style>
 #app {
