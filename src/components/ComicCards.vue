@@ -1,8 +1,7 @@
 <script>
 export default {
   name: "ComicCard",
-  props: ["comicList", "comicLanguage"],
-
+  props: ["comicList", "comicLanguage", "currentPage"],
   data: function () {
     return {
       images: [],
@@ -10,22 +9,22 @@ export default {
     };
   },
   mounted: function () {
-    this.importAllThumbs(require.context('../assets/comics/thumb/', true, /\.png$/));
+    this.importAllThumbs(require.context("../assets/comics/thumb/", true, /\.png$/));
     this.language = this.comicLanguage + "Name";
   },
   methods: {
     importAllThumbs: function (r) {
       r.keys().forEach(key => (this.images.push({ pathLong: r(key), pathShort: key })));
     },
-  }
+  },
 }
 </script>
 
 <template>
-
   <div class="container"><br />
     <div class="row">
-      <div class="col-sm-3 py-md-2" v-for="comic in comicList" v-bind:key="comic.number">
+      <div class="col-sm-3 py-md-2" v-for="comic in comicList" v-bind:key="comic.number" v-bind:comicList="comicList"
+        v-bind:currentPage="currentPage">
         <div class="card rounded-0">
           <div class="comicNumber bg-dark text-white">
             # {{ comic.number }}
@@ -43,7 +42,6 @@ export default {
       </div>
     </div>
   </div>
-
 </template>
 
 <style scoped>

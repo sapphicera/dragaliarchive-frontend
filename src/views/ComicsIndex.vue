@@ -1,13 +1,17 @@
 <script>
 import axios from "axios";
 import ComicCards from "@/components/ComicCards.vue";
+import ComicPagination from "@/components/ComicPagination.vue";
 
 export default {
-  components: { ComicCards },
+  components: { ComicCards, ComicPagination },
   data: function () {
     return {
       comics: [],
       comicLanguage: this.$route.params.language,
+      currentPage: 0,
+      pageSize: 4,
+      visibleComics: []
     };
   },
   created: function () {
@@ -17,8 +21,20 @@ export default {
     getComicInfo: function () {
       axios.get(`/comics/${this.comicLanguage}.json`).then((response) => {
         this.comics = response.data;
+      }).then(() => {
+        this.updateVisibleComics();
       })
-    }
+    },
+    updateVisibleComics: function () {
+      this.visibleComics = this.comics.slice(this.currentPage * this.pageSize, (this.currentPage * this.pageSize) + this.pageSize)
+      if (this.visibleComics.length === 0 && this.currentPage > 0) {
+        this.updatePage(this.currentPage - 1);
+      }
+    },
+    updatePage: function (pageNumber) {
+      this.currentPage = pageNumber;
+      this.updateVisibleComics();
+    },
   },
 };
 </script>
@@ -40,21 +56,12 @@ export default {
     </div>
   </div>
 
-  <ComicCards :comicList="comics" v-if="comicLanguage" :comicLanguage="comicLanguage" />
+  <ComicCards :comicList="visibleComics" :currentPage="currentPage" v-if="comicLanguage"
+    :comicLanguage="comicLanguage" />
 
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#">Next</a>
-      </li>
-    </ul>
-  </nav>
+  <ComicPagination :allComics="comics" :currentPage="currentPage" :pageSize="pageSize"
+    @page-update="updatePage($event)" />
+
 </template>
 
 <style>
