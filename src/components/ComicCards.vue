@@ -1,16 +1,17 @@
 <script>
 export default {
   name: "ComicCard",
-  props: ["comicList"],
-  emits: [],
+  props: ["comicList", "comicLanguage"],
 
   data: function () {
     return {
       images: [],
+      language: "",
     };
   },
   mounted: function () {
     this.importAllThumbs(require.context('../assets/comics/thumb/', true, /\.png$/));
+    this.language = this.comicLanguage + "Name";
   },
   methods: {
     importAllThumbs: function (r) {
@@ -29,10 +30,12 @@ export default {
           <div class="comicNumber bg-dark text-white">
             # {{ comic.number }}
           </div>
-          <img v-bind:src="images[comic.id - 1].pathLong" class="card-img rounded-0" v-bind:alt="comic.enName">
+          <img v-bind:src="images[comic.id - 1].pathLong" class="card-img rounded-0" v-bind:alt="comic[language]">
           <div class="cardText py-1 px-2 bg-dark text-white">
             <h5 class="card-title my-0 text-truncate">
-              <router-link v-bind:to="`/comics/${comic.id}`" v-bind:title="comic.enName">{{ comic.enName }}
+              <router-link v-bind:to="`/comics/${this.comicLanguage}/${comic.id}`" v-bind:title="comic[language]">{{
+                comic[language]
+              }}
               </router-link>
             </h5>
           </div>

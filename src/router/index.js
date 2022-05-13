@@ -43,12 +43,12 @@ const routes = [
     component: () => import('../views/AlliancesShow.vue')
   },
   {
-    path: '/comics',
+    path: '/comics/:language',
     name: 'comics-index',
     component: () => import('../views/ComicsIndex.vue')
   },
   {
-    path: '/comics/:id',
+    path: '/comics/:language/:id',
     name: 'comics-show',
     component: () => import('../views/ComicsShow.vue')
   },

@@ -14,6 +14,11 @@ export default {
       this.store.getUserUsername = localStorage.user_username;
     }
   },
+  computed: {
+    currentRouteName() {
+      return this.$route.name;
+    }
+  }
 }
 </script>
 
@@ -26,8 +31,8 @@ export default {
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
         <!-- standard links & dropdown links to pages -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
@@ -36,14 +41,11 @@ export default {
           <li class="nav-item">
             <a class="nav-link" href="/comics">Comics</a>
           </li>
-          <li class="nav-item" v-if="!store.getLoggedIn">
+          <li class="nav-item">
+            <a class="nav-link" href="/alliances">Alliances</a>
+          </li>
+          <li class="nav-item" v-if="store.getLoggedIn">
             <a class="nav-link" :href="`/users/${store.getUserUsername}`">Profile</a>
-          </li>
-          <li class="nav-item" v-if="!store.getLoggedIn">
-            <a class="nav-link" href="/signup">Sign Up</a>
-          </li>
-          <li class="nav-item" v-if="!store.getLoggedIn">
-            <a class="nav-link" href="/login">Log In</a>
           </li>
 
           <span v-if="store.getLoggedIn">
@@ -63,12 +65,33 @@ export default {
               </ul>
             </li>
           </span>
+
+          <li class="nav-item" v-if="!store.getLoggedIn">
+            <a class="nav-link" href="/signup">Sign Up</a>
+          </li>
+          <li class="nav-item" v-if="!store.getLoggedIn">
+            <a class="nav-link" href="/login">Log In</a>
+          </li>
         </ul>
 
+        <!-- search bar for users -->
         <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
+          <button class="btn btn-outline-success me-4" type="submit">Search</button>
         </form>
+
+        <!-- language button -->
+        <div class="btn-group" v-if="currentRouteName === `comics-index` || currentRouteName === `comics-show`">
+          <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Language
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">EN</a></li>
+            <li><a class="dropdown-item" href="#">日本語</a></li>
+            <li><a class="dropdown-item" href="#">简体中文</a></li>
+            <li><a class="dropdown-item" href="#">繁體中文</a></li>
+          </ul>
+        </div>
 
       </div>
     </div>
@@ -79,6 +102,35 @@ export default {
   </div>
 
   <router-view />
+
+  <footer class="text-center text-white" style="background-color: #f1f1f1;">
+    <!-- Grid container -->
+    <div class="container pt-4">
+      <!-- Section: Social media -->
+      <section class="mb-4">
+        <!-- Github -->
+        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button"
+          data-mdb-ripple-color="dark"><i class="fab fa-facebook-f"></i></a>
+
+        <!-- Website -->
+        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button"
+          data-mdb-ripple-color="dark"><i class="fab fa-twitter"></i></a>
+
+        <!-- LinkedIn -->
+        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button"
+          data-mdb-ripple-color="dark"><i class="fab fa-google"></i></a>
+      </section>
+    </div>
+    <!-- Grid container -->
+
+    <!-- Copyright -->
+    <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2020 Copyright:
+      <a class="text-dark" href="https://mdbootstrap.com/">ME!</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+
 
 </template>
 
@@ -102,5 +154,9 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.dropdown-menu.dropdown-menu-end {
+  min-width: 100%;
 }
 </style>

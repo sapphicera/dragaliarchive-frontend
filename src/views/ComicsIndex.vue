@@ -7,6 +7,7 @@ export default {
   data: function () {
     return {
       comics: [],
+      comicLanguage: this.$route.params.language,
     };
   },
   created: function () {
@@ -14,9 +15,7 @@ export default {
   },
   methods: {
     getComicInfo: function () {
-      console.log("getting comic info...");
-      axios.get("/comics.json").then((response) => {
-        console.log(response.data);
+      axios.get(`/comics/${this.comicLanguage}.json`).then((response) => {
         this.comics = response.data;
       })
     }
@@ -41,7 +40,7 @@ export default {
     </div>
   </div>
 
-  <ComicCards :comicList="comics" />
+  <ComicCards :comicList="comics" v-if="comicLanguage" :comicLanguage="comicLanguage" />
 
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">

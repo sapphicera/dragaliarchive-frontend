@@ -8,7 +8,7 @@ export default {
     };
   },
   created: function () {
-    this.getComicInfo();
+    this.getComicInfo(this.$route.params.language);
   },
   computed: {
     currentComic() {
@@ -20,11 +20,11 @@ export default {
     }
   },
   methods: {
-    getComicInfo: function () {
-      axios.get(`/comics/${this.$route.params.id}.json`).then((response) => {
+    getComicInfo: function (language) {
+      axios.get(`/comics/${language}/${this.$route.params.id}.json`).then((response) => {
         this.comic = response.data;
       });
-    }
+    },
   },
 };
 </script>
