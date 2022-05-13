@@ -1,10 +1,10 @@
 <script>
 import axios from "axios";
-import ComicCards from "@/components/ComicCards.vue";
+import ComicCard from "@/components/ComicCard.vue";
 import ComicPagination from "@/components/ComicPagination.vue";
 
 export default {
-  components: { ComicCards, ComicPagination },
+  components: { ComicCard, ComicPagination },
   data: function () {
     return {
       comics: [],
@@ -56,8 +56,16 @@ export default {
     </div>
   </div>
 
-  <ComicCards :comicList="visibleComics" :currentPage="currentPage" v-if="comicLanguage"
-    :comicLanguage="comicLanguage" />
+  <div class="container"><br />
+    <div class="row">
+      <div class="col-sm-3 py-md-2" v-for="comic in visibleComics" :key="comic.number" :visibleComics="visibleComics"
+        :currentPage="currentPage">
+
+        <ComicCard :comicInfo="comic" v-if="comicLanguage" :comicLanguage="comicLanguage" />
+
+      </div>
+    </div>
+  </div>
 
   <ComicPagination :allComics="comics" :currentPage="currentPage" :pageSize="pageSize"
     @page-update="updatePage($event)" />
