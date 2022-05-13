@@ -17,6 +17,9 @@ export default {
   computed: {
     currentRouteName() {
       return this.$route.name;
+    },
+    comicRoute() {
+      return this.$route.params.id;
     }
   }
 }
@@ -39,7 +42,7 @@ export default {
             <a class="nav-link" aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/comics">Comics</a>
+            <a class="nav-link" href="/comics/en">Comics</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/alliances">Alliances</a>
@@ -85,11 +88,19 @@ export default {
           <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             Language
           </button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">EN</a></li>
-            <li><a class="dropdown-item" href="#">日本語</a></li>
-            <li><a class="dropdown-item" href="#">简体中文</a></li>
-            <li><a class="dropdown-item" href="#">繁體中文</a></li>
+
+          <ul class="dropdown-menu dropdown-menu-end" v-if="currentRouteName === `comics-index`">
+            <li><a class="dropdown-item" href="/comics/en">EN</a></li>
+            <li><a class="dropdown-item" href="/comics/jp">日本語</a></li>
+            <li><a class="dropdown-item" href="/comics/chs">简体中文</a></li>
+            <li><a class="dropdown-item" href="/comics/cht">繁體中文</a></li>
+          </ul>
+
+          <ul class="dropdown-menu dropdown-menu-end" v-if="currentRouteName === `comics-show`">
+            <li><a class="dropdown-item" :href="`/comics/en/${comicRoute}`">EN</a></li>
+            <li><a class="dropdown-item" :href="`/comics/jp/${comicRoute}`">日本語</a></li>
+            <li><a class="dropdown-item" :href="`/comics/chs/${comicRoute}`">简体中文</a></li>
+            <li><a class="dropdown-item" :href="`/comics/cht/${comicRoute}`">繁體中文</a></li>
           </ul>
         </div>
 
@@ -130,7 +141,6 @@ export default {
     </div>
     <!-- Copyright -->
   </footer>
-
 
 </template>
 

@@ -4,17 +4,18 @@ import axios from "axios";
 export default {
   data: function () {
     return {
+      language: this.$route.params.language,
       comic: {},
     };
   },
   created: function () {
-    this.getComicInfo(this.$route.params.language);
+    this.getComicInfo(this.language);
   },
   computed: {
     currentComic() {
       return {
         ...this.comic,
-        image: this.comic.number && require(`../assets/comics/en/${this.comic.number}.png`),
+        image: this.comic.number && require(`../assets/comics/${this.language}/${this.comic.number}.png`),
         number: this.comic.number
       }
     }
