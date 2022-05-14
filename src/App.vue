@@ -45,6 +45,9 @@ export default {
             <a class="nav-link" href="/comics/en">Comics</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="/stickers">Stickers</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="/alliances">Alliances</a>
           </li>
           <li class="nav-item" v-if="store.getLoggedIn">
@@ -108,40 +111,11 @@ export default {
     </div>
   </nav>
 
-  <div v-if="store.getLoggedIn">
+  <!-- <div v-if="store.getLoggedIn">
     {{ store.getLoggedIn }} || {{ store.getUserId }} || {{ store.getUserUsername }}
-  </div>
+  </div> -->
 
   <router-view />
-
-  <footer class="text-center text-white" style="background-color: #f1f1f1;">
-    <!-- Grid container -->
-    <div class="container pt-4">
-      <!-- Section: Social media -->
-      <section class="mb-4">
-        <!-- Github -->
-        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button"
-          data-mdb-ripple-color="dark"><i class="fab fa-facebook-f"></i></a>
-
-        <!-- Website -->
-        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button"
-          data-mdb-ripple-color="dark"><i class="fab fa-twitter"></i></a>
-
-        <!-- LinkedIn -->
-        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button"
-          data-mdb-ripple-color="dark"><i class="fab fa-google"></i></a>
-      </section>
-    </div>
-    <!-- Grid container -->
-
-    <!-- Copyright -->
-    <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-      © 2020 Copyright:
-      <a class="text-dark" href="https://mdbootstrap.com/">ME!</a>
-    </div>
-    <!-- Copyright -->
-  </footer>
-
 </template>
 
 <style>

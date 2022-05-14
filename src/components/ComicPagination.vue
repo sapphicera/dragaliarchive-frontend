@@ -15,32 +15,40 @@ export default {
       return this.currentPage === 0 ? false : true;
     },
     showNextLink() {
-      return this.currentPage === (this.totalPages() - 1) ? false : true
+      return this.currentPage === (this.totalPages() - 1) ? false : true;
     }
   }
 }
 </script>
 
 <template>
-  <div v-if="totalPages() > 0" class="pagination-wrapper">
-    <span v-if="showPreviousLink()" class="page-item" @click="updatePage(currentPage - 1)">back</span>
-    <span v-if="showNextLink()" class="page-item" @click="updatePage(currentPage + 1)">forward</span>
-  </div>
-
-  <!-- <nav aria-label="Page navigation example">
+  <nav v-if="totalPages() > 0" aria-label="navigation">
     <ul class="pagination justify-content-center">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#">Next</a>
-      </li>
-    </ul>
-  </nav> -->
 
+      <li class="page-item">
+        <button class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </button>
+      </li>
+
+      <li v-if="currentPage > 0" class="page-item">
+        <button class="page-link" @click="updatePage(currentPage - 1)">{{ currentPage }}</button>
+      </li>
+      <li class="page-item active">
+        <button class="page-link">{{ currentPage + 1 }}</button>
+      </li>
+      <li class="page-item">
+        <button class="page-link" @click="updatePage(currentPage + 1)">{{ currentPage + 2 }}</button>
+      </li>
+
+      <li class="page-item">
+        <button class="page-link" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </button>
+      </li>
+
+    </ul>
+  </nav>
 </template>
 
 <style scoped>

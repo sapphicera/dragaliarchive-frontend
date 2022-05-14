@@ -10,7 +10,7 @@ export default {
       comics: [],
       comicLanguage: this.$route.params.language,
       currentPage: 0,
-      pageSize: 4,
+      pageSize: 8,
       visibleComics: []
     };
   },
@@ -40,7 +40,7 @@ export default {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container my-3">
     <div id="featuredCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="5000">
@@ -61,7 +61,7 @@ export default {
       <div class="col-sm-3 py-md-2" v-for="comic in visibleComics" :key="comic.number" :visibleComics="visibleComics"
         :currentPage="currentPage">
 
-        <ComicCard :comicInfo="comic" v-if="comicLanguage" :comicLanguage="comicLanguage" />
+        <ComicCard :comicInfo="comic" :comicLanguage="comicLanguage" />
 
       </div>
     </div>
