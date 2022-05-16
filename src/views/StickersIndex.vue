@@ -4,10 +4,16 @@ export default {
     return {
       stickers: [],
       language: "EN",
+      length: 66,
     };
   },
   mounted: function () {
     this.importStickerData();
+  },
+  computed: {
+    stickersLoaded: function () {
+      return this.stickers.slice(0, this.length);
+    },
   },
   methods: {
     importStickerData: function () {
@@ -24,14 +30,18 @@ export default {
       }
       return require(`../assets/stickers/audio/${lang}/vo_chr_stamp [${audioId}].wav`);
     },
-    playAudio(audioId, lang) {
+    playAudio: function (audioId, lang) {
       let audio = this.getAudio(audioId, lang);
       console.log(audio);
       new Audio(audio).play();
     },
-    currentLanguage(lang) {
+    currentLanguage: function (lang) {
       this.language = lang;
     },
+    loadMoreStickers: function () {
+      if (this.length > this.stickers.length) return;
+      this.length = this.length + 66;
+    }
   }
 };
 </script>
@@ -44,7 +54,7 @@ export default {
 
   <div class="container">
     <div class="row">
-      <div class="col col-md-auto px-0" v-for="sticker in stickers" :key="sticker">
+      <div class="col col-md-auto px-0" v-for="sticker in stickersLoaded" :key="sticker">
 
         <img class="stickerButton" :src="getSticker(sticker.imgId, language)"
           @click="playAudio(sticker.audioId, language)">
@@ -52,6 +62,9 @@ export default {
       </div>
     </div>
   </div>
+
+  <button @click="loadMoreStickers" v-if="stickers.length > length" type="button"
+    class="btn btn-primary btn-lg my-2">Load More</button>
 </template>
 
 <style>

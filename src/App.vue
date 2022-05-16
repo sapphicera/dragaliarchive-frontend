@@ -92,6 +92,7 @@ export default {
             Language
           </button>
 
+          <!-- comic index -->
           <ul class="dropdown-menu dropdown-menu-end" v-if="currentRouteName === `comics-index`">
             <li><a class="dropdown-item" href="/comics/en">EN</a></li>
             <li><a class="dropdown-item" href="/comics/jp">日本語</a></li>
@@ -99,11 +100,18 @@ export default {
             <li><a class="dropdown-item" href="/comics/cht">繁體中文</a></li>
           </ul>
 
+          <!-- specific comic issue -->
           <ul class="dropdown-menu dropdown-menu-end" v-if="currentRouteName === `comics-show`">
             <li><a class="dropdown-item" :href="`/comics/en/${comicRoute}`">EN</a></li>
             <li><a class="dropdown-item" :href="`/comics/jp/${comicRoute}`">日本語</a></li>
             <li><a class="dropdown-item" :href="`/comics/chs/${comicRoute}`">简体中文</a></li>
             <li><a class="dropdown-item" :href="`/comics/cht/${comicRoute}`">繁體中文</a></li>
+          </ul>
+
+          <!-- sticker page -->
+          <ul class="dropdown-menu dropdown-menu-end" v-if="currentRouteName === `stickers-index`">
+            <li><a class="dropdown-item" :href="`/comics/en/${comicRoute}`">EN</a></li>
+            <li><a class="dropdown-item" :href="`/comics/jp/${comicRoute}`">日本語</a></li>
           </ul>
         </div>
 
