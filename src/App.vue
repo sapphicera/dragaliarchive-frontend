@@ -1,10 +1,13 @@
 <script>
 import { useUserStore } from "./stores/user";
+import axios from "axios";
 
 export default {
   data: function () {
     return {
       store: useUserStore(),
+      search: "",
+      users: [],
     }
   },
   watch: {
@@ -21,7 +24,20 @@ export default {
     comicRoute() {
       return this.$route.params.id;
     }
-  }
+  },
+  methods: {
+    searchUsers: function () {
+      console.log("searching...");
+      axios.get(`/users.json?search_term=${this.search}`).then(response => {
+        this.users = response.data;
+        this.$router.push(`/users/${this.users[0].username}`);
+        this.users = [];
+        this.search = "";
+      }).catch(() => {
+        this.$router.push("404");
+      })
+    }
+  },
 }
 </script>
 
@@ -81,8 +97,8 @@ export default {
         </ul>
 
         <!-- search bar for users -->
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form v-on:submit.prevent="searchUsers()" class="d-flex">
+          <input v-model="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success me-4" type="submit">Search</button>
         </form>
 
@@ -107,12 +123,6 @@ export default {
             <li><a class="dropdown-item" :href="`/comics/chs/${comicRoute}`">简体中文</a></li>
             <li><a class="dropdown-item" :href="`/comics/cht/${comicRoute}`">繁體中文</a></li>
           </ul>
-
-          <!-- sticker page -->
-          <ul class="dropdown-menu dropdown-menu-end" v-if="currentRouteName === `stickers-index`">
-            <li><a class="dropdown-item" :href="`/comics/en/${comicRoute}`">EN</a></li>
-            <li><a class="dropdown-item" :href="`/comics/jp/${comicRoute}`">日本語</a></li>
-          </ul>
         </div>
 
       </div>
@@ -133,6 +143,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+#app-body {
+  min-height: 100vh;
 }
 
 nav {
