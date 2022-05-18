@@ -1,39 +1,36 @@
 <script>
 import axios from "axios";
 import UserDropdown from "@/components/UserDropdown.vue";
+import UserEditIcon from "@/components/UserEditIcon.vue";
 
 export default {
-  components: { UserDropdown },
+  components: { UserDropdown, UserEditIcon },
   data: function () {
     return {
       pageLoaded: false,
       user: [],
       editProfileParams: {},
       errors: [],
-      images: [],
     };
   },
   created: function () {
     this.currentData();
   },
-  mounted: function () {
-    this.importAll(require.context("../assets/character-icons/", true, /\.png$/));
-  },
   methods: {
     currentData: function () {
       axios.get(`/users/${this.$route.params.username}.json`).then((response) => {
-        this.user = response.data;
+        var h = response.data;
+        this.user = { username: h['username'], ign: h['ign'], icon: h['icon'] };
+        if (response.data['alliance_id'] != null) {
+          this.user['alliance'] = h['alliance']['name'];
+          this.user['alliance_id'] = h['alliance_id'];
+        }
         this.editProfileParams = response.data;
-        console.log(this.editProfileParams);
         delete this.editProfileParams["alliance"];
         delete this.editProfileParams["alliance_id"];
-        // console.log("response uploaded");
       }).then(() => {
         this.pageLoaded = true;
       })
-    },
-    importAll: function (r) {
-      r.keys().forEach(key => (this.images.push({ pathLong: r(key), pathShort: key })));
     },
     pickIcon: function (icon) {
       this.editProfileParams.icon = icon;
@@ -42,8 +39,7 @@ export default {
       this.editProfileParams[data.name] = data.output;
     },
     editProfile: function () {
-      axios.patch(`/users/${this.$route.params.username}.json`, this.editProfileParams).then((response) => {
-        console.log(response.data);
+      axios.patch(`/users/${this.$route.params.username}.json`, this.editProfileParams).then(() => {
         this.$router.push(`/users/${this.$route.params.username}`);
       }).catch((error) => {
         this.errors = error.response.data.errors;
@@ -54,27 +50,7 @@ export default {
 </script>
 
 <template>
-  <!-- {{ editProfileParams }} -->
-  <!-- <br>
-  {{ user }} -->
-
-  <!-- <div>
-    <label>Choose an Icon</label>
-    <br />
-    <div class="container">
-      <div class="selectalli">
-        <div class="row row-cols-auto gx-1 gy-1 justify-content-center">
-          <div v-for="icon in images" v-bind:key="icon" class="col">
-            <input type="radio" class="btn-check" name="options" :id="icon.pathLong" autocomplete="off">
-            <label class="btn btn-outline-secondary" :for="icon.pathLong" @click="pickIcon(icon.pathLong)">
-              <img :src="icon.pathLong" />
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br /> -->
+  <!-- {{ editProfileParams }} <br> {{ user }} -->
 
   <form v-on:submit.prevent="editProfile()">
     <div class="container my-4">
@@ -86,10 +62,17 @@ export default {
             <div class="card">
               <div class="card-body">
                 <div class="d-flex flex-column align-items-center text-center">
-                  <img v-bind:src="user.icon" :alt="user.username" width="150">
+                  <img v-bind:src="editProfileParams.icon" :alt="user.username" width="150">
                   <div class="mt-2">
                     <h4>{{ user.username }}</h4>
-                    <p class="text-secondary mb-1">IGN: {{ user.ign }}</p>
+                    <p class="text-secondary mb-1">IGN: {{ editProfileParams.ign }}</p>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editUserIcon">
+                      Change Icon
+                    </button>
+                    <span v-if="pageLoaded">
+                      <UserEditIcon type="editUserIcon" title="Select an Icon" submit="Submit Changes"
+                        @save-data="pickIcon($event)" />
+                    </span>
                   </div>
                 </div>
               </div>
@@ -102,7 +85,7 @@ export default {
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                   <h6 class="mb-0">Alliance</h6>
                   <span v-if="user.alliance_id != null" class="text-secondary">
-                    <router-link v-bind:to="`/alliances/${user.alliance.name}`">{{ user.alliance.name }}</router-link>
+                    {{ user.alliance }}
                   </span>
                   <span v-else class="text-secondary">no alliance found!</span>
                 </li>
@@ -216,11 +199,6 @@ export default {
 </template>
 
 <style>
-/* .selectalli img {
-  height: 100px;
-  width: 100px;
-} */
-
 img {
   width: 100px;
   height: 100px;
@@ -234,10 +212,4 @@ body {
 .h-100 {
   height: 100% !important;
 }
-
-/* .col-sm-3 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
 </style>

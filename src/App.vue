@@ -27,14 +27,15 @@ export default {
   },
   methods: {
     searchUsers: function () {
-      console.log("searching...");
-      axios.get(`/users.json?search_term=${this.search}`).then(response => {
+      axios.get(`/users.json?search_term=${this.search}`).then((response) => {
         this.users = response.data;
-        this.$router.push(`/users/${this.users[0].username}`);
+        if (Object.keys(this.users).length === 0) {
+          this.$router.push("/404");
+        } else {
+          this.$router.push(`/users/${this.users[0].username}`);
+        }
         this.users = [];
         this.search = "";
-      }).catch(() => {
-        this.$router.push("404");
       })
     }
   },
@@ -130,7 +131,7 @@ export default {
     {{ store.getLoggedIn }} || {{ store.getUserId }} || {{ store.getUserUsername }}
   </div> -->
 
-  <router-view />
+  <router-view :key="$route.path" />
 </template>
 
 <style>
