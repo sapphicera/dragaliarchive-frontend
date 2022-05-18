@@ -39,9 +39,6 @@ export default {
           </div>
 
           <div class="modal-body">
-
-            {{ newAllianceParams }}
-
             <div class="row g-2">
               <div class="col">
                 <label class="col-form-label">Alliance Name: </label>

@@ -1,0 +1,44 @@
+{
+  "elements": [
+    "Shadow",
+    "Light",
+    "Fire",
+    "Water",
+    "Wind"
+  ],
+  "weapons": [
+    "Sword",
+    "Blade",
+    "Dagger",
+    "Axe",
+    "Lance",
+    "Bow",
+    "Wand",
+    "Staff",
+    "Manacaster"
+  ],
+  "fights": [
+    "High Midgardsormr (HMS)",
+    "High Brunhilda (HBH)",
+    "High Mercury (HMC)",
+    "High Jupiter (HJP)",
+    "High Zodiark (HZD)",
+    "Volk",
+    "Kai Yan",
+    "Ciella",
+    "Ayaha & Otoha",
+    "Tartarus",
+    "Primal Midgardsormr (PMS)",
+    "Primal Brunhilda (PBH)",
+    "Primal Mercury (PMC)",
+    "Primal Jupiter (PJP)",
+    "Primal Zodiark (PZD)"
+  ],
+  "events": [
+    "Ageless Artifice",
+    "Clockwork Heart",
+    "Dawn of Dragalia",
+    "Forgotten Truths",
+    "Fractured Futures"
+  ]
+}

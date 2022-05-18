@@ -27,19 +27,19 @@ export default {
       let elements = document.getElementsByClassName("btn");
       for (var i = 1; i < elements.length; i++) {
         switch (this.user.element) {
-          case "light":
+          case "Light":
             elements[i].classList.add("btn-warning");
             break;
-          case "shadow":
+          case "Shadow":
             elements[i].classList.add("btn-dark");
             break;
-          case "fire":
+          case "Fire":
             elements[i].classList.add("btn-danger");
             break;
-          case "water":
+          case "Water":
             elements[i].classList.add("btn-info");
             break;
-          case "wind":
+          case "Wind":
             elements[i].classList.add("btn-success");
             break;
           case null:
@@ -206,5 +206,11 @@ body {
 
 .h-100 {
   height: 100% !important;
+}
+
+.col-sm-3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
