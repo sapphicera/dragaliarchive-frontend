@@ -12,6 +12,11 @@ export default {
   created: function () {
     this.showUser();
   },
+  computed: {
+    allianceFormatted() {
+      return this.user.alliance.name.replace(/\s+/g, '-')
+    }
+  },
   methods: {
     showUser: function () {
       axios.get(`http://localhost:3000/users/${this.$route.params.username}.json`).then((response) => {
@@ -94,7 +99,9 @@ export default {
               <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 <h6 class="mb-0">Alliance</h6>
                 <span v-if="user.alliance_id != null" class="text-secondary">
-                  <router-link v-bind:to="`/alliances/${user.alliance.name}`">{{ user.alliance.name }}</router-link>
+                  <router-link :to="{ name: 'alliances-show', params: { name: allianceFormatted } }">
+                    {{ user.alliance.name }}
+                  </router-link>
                 </span>
                 <span v-else class="text-secondary">no alliance found!</span>
               </li>

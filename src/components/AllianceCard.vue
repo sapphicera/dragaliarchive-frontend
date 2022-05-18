@@ -1,7 +1,20 @@
 <script>
 export default {
   name: "AllianceCard",
-  props: ['name', 'leader', 'icon', 'description']
+  props: ['data'],
+  data: function () {
+    return {
+      name: this.data.name,
+      leader: this.data.leader,
+      icon: this.data.icon,
+      description: this.data.description
+    };
+  },
+  computed: {
+    allianceFormatted() {
+      return this.name.replace(/\s+/g, '-')
+    }
+  },
 }
 </script>
 
@@ -16,9 +29,12 @@ export default {
       </div>
     </div>
     <div class="card-footer">
-      <router-link :to="{
+      <!-- <router-link :to="{
         name: 'alliances-show', params: { name: name }
-      }" class="btn btn-primary">Learn More</router-link>
+      }" class="btn btn-primary">Learn More</router-link> -->
+      <router-link :to="{ name: 'alliances-show', params: { name: allianceFormatted } }" class="btn btn-primary">
+        Learn More
+      </router-link>
     </div>
   </div>
 </template>
