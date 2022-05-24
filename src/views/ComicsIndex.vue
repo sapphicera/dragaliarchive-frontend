@@ -10,7 +10,7 @@ export default {
       comics: [],
       comicLanguage: this.$route.params.language,
       currentPage: 0,
-      pageSize: 8,
+      pageSize: 12,
       visibleComics: []
     };
   },
@@ -60,9 +60,7 @@ export default {
     <div class="row">
       <div class="col-sm-3 py-md-2" v-for="comic in visibleComics" :key="comic.number" :visibleComics="visibleComics"
         :currentPage="currentPage">
-
         <ComicCard :comicInfo="comic" :comicLanguage="comicLanguage" />
-
       </div>
     </div>
   </div>
